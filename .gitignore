@@ -4,3 +4,4 @@ lib64
 share
 lib
 pyvenv.cfg
+source/__pycache__
