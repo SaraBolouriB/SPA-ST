@@ -1,31 +1,70 @@
-def spa_st(Ss, Pp, Ll, studens_pref, lecturers_pref, offers, project_capacity, lecturer_capacity):
+def spa_st(Ss, Pp, Ll, students_pref, lecturers_pref, offers, projects_capacity, lecturers_capacity):
 
-    #Variables ------------------------------------------------------------------------------
-    studens_pref_copy = list(studens_pref)
+    #Variables --------------------------------------------------------------------------------------
+    students_pref_copy = list(students_pref)
     lecturers_pref_copy = list(lecturers_pref)
+    project_lecturer = lecturer_offers(offers=offers)
 
     number_of_stu = len(Ss)                                 #Number of student
     number_of_lect = len(Ll)                                #Number of lecturer
     number_of_proj = len(Pp)                                #Number of project
 
-    s_to_p = initialization(number_of_stu)                  
-    p_to_s = initialization(number_of_proj)     
-    l_to_s = initialization(number_of_lect) 
-
+    Gs = initialization(number_of_stu)                  
+    Gp = initialization(number_of_proj)     
+    Gl = initialization(number_of_lect) 
     LP_to_s = lp_initialization(number_of_lect, offers)
-
-    lecturerC, projectC = [], []
+    Ljk = 
 
     graph = [[-1] for row in range(lenS)]       #Primary Graph
-    
-    for i in range(number_of_stu):
-        if not s_to_p[i]:
+    ## -----------------------------------------------------------------------------------------------
+    lecturerC, projectC = [0 for i in range(number_of_lect)], [0 for i in range(number_of_proj)
+    project_replete, lecturer_replete = [], []
 
+    for student in range(number_of_stu):
+        if not Gs[student] and not studens_pref_copy[student]:
+            head_project = studens_pref_copy[student].pop(0)
 
-
-
-    
+            if type(head_project) == tuple:     #Is it tie?
+                lenL = len(head_project)
+            else:
+                lenL = 1
             
+            for project in range(lenL):
+                lecturer = project_lecturer[project]
+                graph[student] = project
+                #Update Lists -------------------------------------------------------------------------
+                Gs[student] = project
+                Gp[project] = student
+                Gl[lecturer] = student
+                ##-------------------------------------------------------------------------------------
+                if project_capacity[project] <= projectC[project]:
+                    project_replete.append(project)
+                    alpha = calculate_alpha(project_capacity, Gp, offers[lecturer])
+                    check_domained = 
+                    pass
+
+                if lecturer_capacity[lecturer] <= lecturerC[lecturer]:
+                    lecturer_replete.append(lecturer)
+                    alpha = calculate_alpha(project_capacity, Gp, offers[lecturer])
+                    dominated_students = dominated( alpha=alpha,
+                                                    assign_students=list(Gl[lecturer]), 
+                                                    lecturer_capacity=lecturers_capacity[lecturer], 
+                                                    students=lecturers_pref[lecturer])
+                                                    
+                
+
+
+
+def dominated(alpha, assign_students, lecturer_capacity, students):
+    dG = len(assign_students)
+    if min(alpah, dG) >= lecturer_capacity:
+        for pref_stu in students:
+
+
+
+
+
+                                
 
 
 
@@ -45,9 +84,13 @@ def lp_initialization(lengthL, offers):
     return init
 
 def lecturer_offers(offers):
-    project_offered = []
+    project_offered = {}
+    i = 0
+
     for offer in offers:
         for p in offer:
-            project_offered.append(p)
+            project_offered[p] = i
+
+        i += 1
     
     return project_offered
