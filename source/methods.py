@@ -77,13 +77,41 @@ def intersection(A, B):
         for b in B:
             intersection.append(b) if a == b else None
 
-def reduce_graph(graph):
-    pass
+def reduce_graph(graph, project_lecturer, lecturers_pref, Ljk, Gp, Gl, projects_capacity, lecturers_capacity):
+    projects_capacity_copy = list(projects_capacity)
+    lecturers_capacity_copy = list(lecturers_capacity)
+    for student in graph:
+        for project in student:
+            lecturer=project_lecturer[project]
+            is_bounded = bounded_edge(student=student, project=project, lecturer=lecturer,
+                                        Lk=lecturers_pref[lecturer], Ljk=Ljk, Gp=Gp, Gl=Gl, 
+                                        projects_capacity=projects_capacity, lecturers_capacity=lecturers_capacity)
+            if is_bounded:
+                graph[student].remove(project)
+                Gp[project].remove(student)
+                Gl[lecturer].remove(student)
+                projects_capacity_copy[project] -= 1
+                lecturers_capacity_copy[lecturer] -= 1
+                #Remove all unbounded edge
+            if not graph[student]:
+                del graph[student]      #Isolated vertex(student)
+            
+            if not Gp[project]:
+                del Gp[project]
+            
+            #It's not complete
+            pass
+            
 
-def bounded_edge(student, project, lecturer, Lk, Ljk, Gp, Gl, projects_capacity, is_lower_edge):
+def bounded_edge(student, project, lecturer, Lk, Ljk, Gp, Gl, projects_capacity, lecturers_capacity):
+
     oversubscribed = True if len(Gp[project]) > project_capacity[project] else False
     in_tail_Ljk = True if student == Ljk[lectrur][project].pop() else False
     in_tail_Lk = True if student == Lk[lecturer].pop() else False
+
+    alpha = calculate_alpha(projects_capacity=projects_capacity, Gp=Gp, projects=project)   # ??
+    is_lower_edge = lower_edge( student=student, project=project, lecturer=lecturer, Lk=Lk,
+                                Gl=Gl, alpha=alpha, lecturers_capacity=lecturers_capacity) 
 
     if not oversubscribed and not in_tail_Ljk:
         if not is_lower_edge and not in_tail_Lk:
