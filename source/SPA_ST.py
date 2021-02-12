@@ -126,7 +126,7 @@ def spa_st(Ss, Pp, Ll, students_pref, lecturers_pref, offers, projects_capacity,
                 # unbounded edge 
                 # for on each unbounded edge
     M = feasible_mathching()
-    if strong_matching(M):
+    if strong_matching(M=M):
         return M
     else:
         print("no strongly stable matching exist")

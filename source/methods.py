@@ -127,3 +127,8 @@ def lower_edge(student, project, lecturer, Lk, Gl, alpha, lecturers_capacity):
 def find_critical_set(students):
     pass
 
+def feasible_mathching():
+    pass
+
+def strong_matching(M):
+    pass
